@@ -8,6 +8,10 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -43,6 +47,43 @@ public class W1P2 {
 	System.out.println("**********Persist the book into database**********");
         System.out.println(book);
 	System.out.println("**************************************************");
+        
+        
+        OrderLine orderLineOne = new OrderLine();
+        orderLineOne.setItem("Samsung Mobile");
+        orderLineOne.setQuantity(2);
+        orderLineOne.setUnitPrice(200.0);
+                
+        OrderLine orderLineTwo = new OrderLine();
+        orderLineTwo.setItem("One Plus Mobile");
+        orderLineTwo.setQuantity(3);
+        orderLineTwo.setUnitPrice(400.0);
+        
+        
+        ArrayList<OrderLine> orderLines=new ArrayList();
+        orderLines.add(orderLineOne);
+        orderLines.add(orderLineTwo);
+        
+        AnOrder orderOne = new AnOrder();
+        
+        orderOne.setCreationDate(Calendar.getInstance().getTime());
+        orderOne.setOrderLines(orderLines);
+        
+        emf = Persistence.createEntityManagerFactory("W1P2PU");
+        em = emf.createEntityManager();
+        
+        EntityTransaction tx2 = em.getTransaction();
+        tx2.begin();
+        
+        em.persist(orderLineOne);
+        em.persist(orderLineTwo);
+        em.persist(orderOne);
+
+        tx2.commit();
+        
+        em.close();
+        emf.close();
+        
     }
     
 }
